@@ -1,32 +1,35 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "./assets/vite.svg";
-import heroImg from "./assets/hero.png";
 import "./App.css";
 import { Routes, Route, Link, BrowserRouter } from "react-router-dom";
 import Login from "./Pages/login";
 import Home from "./Pages/home";
 import Search from "./Pages/Search";
+import FileUpload from "./Pages/upload";
+import "bootstrap/dist/css/bootstrap.min.css";
+
 function App() {
   return (
     <BrowserRouter>
       <div>
-        <nav>
-          <Link className="nav" to="/">
+        <div className="d-flex justify-content-around pt-2 mb-5">
+          <Link className="" to="/">
             Home
           </Link>
-          <Link className="nav" to="/Pages/login">
+          <Link className="" to="/Pages/login">
             Login
           </Link>
-          <Link className="nav" to="/Pages/search">
+          <Link className="" to="/Pages/search">
             Search
           </Link>
-        </nav>
+          <Link className="" to="/Pages/upload">
+            Upload
+          </Link>
+        </div>
 
         <Routes>
           <Route path="/" element={<Home />}></Route>
           <Route path="/Pages/login" element={<Login />}></Route>
           <Route path="/Pages/search" element={<Search />}></Route>
+          <Route path="/Pages/upload" element={<FileUpload />}></Route>
         </Routes>
       </div>
     </BrowserRouter>
