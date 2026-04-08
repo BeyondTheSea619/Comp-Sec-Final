@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 
+// middleware
 const app = express();
 const PORT = 5000;
 
@@ -11,6 +12,7 @@ app.get("/", (req, res) => {
   res.send("Backend server is running");
 });
 
+// Login route
 app.post("/api/login", (req, res) => {
   const { email, password } = req.body;
 
