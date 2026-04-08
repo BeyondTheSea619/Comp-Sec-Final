@@ -4,37 +4,80 @@ import "bootstrap/dist/css/bootstrap.min.css";
 //https://react-bootstrap.netlify.app/docs/getting-started/introduction
 function FileUpload() {
   const fileInputRef = useRef(null);
+  // state for selected files
   const [selectedFiles, setSelectedFiles] = useState([]);
+  // state for validation or upload errors
   const [error, setError] = useState("");
+  // allowed extensions for client-side validation
   const acceptedFileExtensions = ["jpg", "png", "jpeg"];
+  // state for success message
+  const [message, setMessage] = useState("");
+
+  // convert extensions into input accept format
   const acceptedFileTypesString = acceptedFileExtensions
     .map((ext) => {
       `.${ext}`;
     })
     .join(",");
 
-  const handleSubmit = () => {
+  // send selected file to backend upload API
+  const handleSubmit = async () => {
     if (selectedFiles.length === 0) {
       setError("File is required.");
     } else if (!error) {
       setSelectedFiles([]);
       setError("");
     }
+
+    try {
+      const formData = new FormData();
+
+      // send only the first selected file
+      formData.append("file", selectedFiles[0]);
+
+      const res = await fetch("http://localhost:5000/api/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        setMessage(data.message);
+        setError("");
+        setSelectedFiles([]);
+      } else {
+        setError(data.message || "Upload failed");
+        setMessage("");
+      }
+    } catch (error) {
+      console.error("Upload error:", error);
+      setError("Server error during upload");
+      setMessage("");
+    }
   };
+
+  // handle file selection from file input
   const handleFileChange = (e) => {
     const newFilesArray = Array.from(e.target.files);
-    provessFiles(newFilesArray);
+    processFiles(newFilesArray);
   };
-  const handleDreop = (e) => {
+
+  // handle drag and drop
+  const handleDrop = (e) => {
     e.preventDefault();
     const droppedFiles = Array.from(e.dataTransfer.files);
     processFiles(droppedFiles);
   };
+
+  // validate selected files on client side
   const processFiles = (filesArray) => {
     const newSelectedFiles = [...selectedFiles];
     let hasError = false;
+
     const fileTypeRegex = new RegExp(acceptedFileExtensions.join("|"), "i");
     console.log("FileRegex", fileTypeRegex);
+
     filesArray.forEach((file) => {
       if (newSelectedFiles.some((f) => f.name === file.name)) {
         setError("File names must be unique");
@@ -49,20 +92,25 @@ function FileUpload() {
         newSelectedFiles.push(file);
       }
     });
+
     if (!hasError) {
       setError("");
       setSelectedFiles(newSelectedFiles);
     }
   };
+
+  // open hidden file input when custom button is clicked
   const handleCustomButtonClick = () => {
     fileInputRef.current.click();
   };
 
+  // remove file from selected file list
   const handleFileDelete = (index) => {
     const updatedFiles = [...selectedFiles];
     updatedFiles.splice(index, 1);
     setSelectedFiles(updatedFiles);
   };
+
   return (
     <div className="d-flex justify-content-center align-items-center min-vh-100 bg-light">
       <div className="container p-4 p-md-5 bg-white rounded shadow-lg">
@@ -72,7 +120,7 @@ function FileUpload() {
           <div
             className="col-12 col-md-6"
             onDragOver={(e) => e.preventDefault()}
-            onDrop={(e) => handleDrop(e)}
+            onDrop={handleDrop}
           >
             <div
               className="border border-primary border-3 rounded p-4 bg-primary bg-opacity-10 d-flex flex-column justify-content-center align-items-center text-center"
@@ -167,6 +215,7 @@ function FileUpload() {
         </div>
 
         {error && <p className="text-danger mt-3 text-center">{error}</p>}
+        {message && <p className="text-success mt-3 text-center">{message}</p>}
 
         <div className="d-flex justify-content-center mt-4">
           <button
