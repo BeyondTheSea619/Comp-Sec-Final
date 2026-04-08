@@ -8,8 +8,8 @@ function Login() {
   const handleSubmit = (formData) => {};
   return (
     <form action={handleSubmit}>
-      <div className="formgroup">
-        <label className="formlabel">Name:</label>
+      <div className="formgroup mt-3">
+        <label className="formlabel mr-1">Name:</label>
         <input
           className="forminput"
           type="text"
@@ -20,8 +20,8 @@ function Login() {
           }}
         />
       </div>
-      <div className="formgroup">
-        <label className="formlabel">Email:</label>
+      <div className="formgroup mt-3">
+        <label className="formlabel ">Email:</label>
         <input
           className="forminput"
           type="text"
@@ -32,8 +32,8 @@ function Login() {
           }}
         />
       </div>
-      <div className="formgroup">
-        <label className="formlabel">Password:</label>
+      <div className="formgroup mt-3">
+        <label className="formlabel mr-1">Password:</label>
         <input
           className="forminput"
           type="password"
