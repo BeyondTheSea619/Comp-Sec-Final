@@ -83,9 +83,9 @@ app.get("/api/search", (req, res) => {
   const q = req.query.q?.toLowerCase() || "";
 
   const items = [
-    { id: 1, name: "Resume" },
-    { id: 2, name: "Profile Image" },
-    { id: 3, name: "Admin Document" },
+    { id: 1, name: "Restaurant A" },
+    { id: 2, name: "Restaurant B" },
+    { id: 3, name: "Cafe C" },
   ];
 
   const results = items.filter((item) => item.name.toLowerCase().includes(q));
