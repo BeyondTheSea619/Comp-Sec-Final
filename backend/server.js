@@ -43,6 +43,21 @@ app.post("/api/login", (req, res) => {
   });
 });
 
+// search route
+app.get("/api/search", (req, res) => {
+  const q = req.query.q?.toLowerCase() || "";
+
+  const items = [
+    { id: 1, name: "Resume" },
+    { id: 2, name: "Profile Image" },
+    { id: 3, name: "Admin Document" },
+  ];
+
+  const results = items.filter((item) => item.name.toLowerCase().includes(q));
+
+  res.json(results);
+});
+
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });

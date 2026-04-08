@@ -1,44 +1,41 @@
 import { useState, useEffect } from "react";
-import { data } from "react-router-dom";
 
 function Search() {
+  // state for search input
   const [query, setQuery] = useState("");
+  // state for search results from API
   const [results, setResults] = useState([]);
-  const [data, setData] = useState([]);
-  //   async function loadData() {
-  //     // async function fetchData() {
-  //     //   try {
-  //     //     const res = await fetch("/seeded");
 
-  //     //     if (!res.ok) {
-  //     //       throw new Error(`Request failed: ${res.status}`);
-  //     //     }
+  // handle search from submission
+  const handleSearch = async (e) => {
+    e.preventDefault();
 
-  //     //     const data = await res.json();
-  //     //     return data;
-  //     //   } catch (err) {
-  //     //     console.error("Error fetching seeded data:", err);
-  //     //     return [];
-  //     //   }
-  //     // }
+    try {
+      // call backend search API with query parameter
+      const res = await fetch(`http://localhost:5000/api/search?q=${query}`);
+      // parse response JSON
+      const data = await res.json();
+      // update results state
+      setResults(data);
+    } catch (error) {
+      console.error("Search error", error);
+    }
+  };
 
-  //     const data = await fetchData();
-  //     setData(data);
-  //   }
-
-  //TODO SEED DATA AND MAKE SURE IT HAS A KEY VALUE PAIR WHERE THE KEY IS NAME AND THE VALUE IS THE ITEM'S NAME I.E. A RESTAURANT.
-  //IT ALSO NEEDS A KEY VALUE PAIR FOR RESTAURANT ID WHERE THE VALUE IS AN INTEGER
-  useEffect(() => {
-    // loadData();
-    const filtered = data.filter((item) =>
-      item.name.toLowerCase().includes(query.toLowerCase()),
-    );
-    setResults(filtered);
-  }, [query, data]);
+  // TODO SEED DATA AND MAKE SURE IT HAS A KEY VALUE PAIR WHERE THE KEY IS NAME AND THE VALUE IS THE ITEM'S NAME I.E. A RESTAURANT.
+  // IT ALSO NEEDS A KEY VALUE PAIR FOR RESTAURANT ID WHERE THE VALUE IS AN INTEGER
+  //   useEffect(() => {
+  //     // loadData();
+  //     const filtered = data.filter((item) =>
+  //       item.name.toLowerCase().includes(query.toLowerCase()),
+  //     );
+  //     setResults(filtered);
+  //   }, [query, data]);
 
   return (
     <div>
-      <form>
+      {/* updated form new call backend API */}
+      <form onSubmit={handleSearch}>
         <input
           type="text"
           placeholder="Search..."
@@ -47,13 +44,15 @@ function Search() {
         />
         <button type="submit">Search</button>
       </form>
-      {results.length == 0 ? (
+      {/* display message if no results */}
+      {results.length === 0 ? (
         <div>
           <h2>This page has no results</h2>
         </div>
       ) : (
         <div>
           <ul>
+            {/* render results returned from backend */}
             {results.map((item) => (
               <li key={item.id}>{item.name}</li>
             ))}
@@ -64,4 +63,5 @@ function Search() {
     </div>
   );
 }
+
 export default Search;
