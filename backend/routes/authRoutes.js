@@ -17,7 +17,7 @@ router.post("/login", loginValidation, handleValidationErrors, (req, res) => {
     });
   }
 
-  if (email === "admin@test.com" && password === "1234") {
+  if (email === "admin@test.com" && password === "Admin1234@") {
     const token = jwt.sign({ id: 1, email, role: "admin" }, SECRET, {
       expiresIn: "1h",
     });
@@ -28,7 +28,7 @@ router.post("/login", loginValidation, handleValidationErrors, (req, res) => {
     });
   }
 
-  if (email === "user@test.com" && password === "1234") {
+  if (email === "user@test.com" && password === "User1234!") {
     const token = jwt.sign({ id: 1, email, role: "user" }, SECRET, {
       expiresIn: "1h",
     });
