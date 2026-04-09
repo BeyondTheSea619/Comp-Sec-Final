@@ -1,7 +1,7 @@
 // Verifies JWT on protected routes (A01, A07)
 
 const jwt = require("jsonwebtoken");
-const SECRET = process.env.JWT_SECRET || "";
+const SECRET = process.env.JWT_SECRET || "demo-secret";
 
 function authenticate(req, res, next) {
   const token = req.headers.authorization?.split(" ")[1];
