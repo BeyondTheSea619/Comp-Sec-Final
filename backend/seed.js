@@ -1,7 +1,7 @@
 // Run with: node seed.js
 // Populates the DB with an admin user, a regular user, restaurants, and menu items.
 
-require("dotenv").config();
+// require("dotenv").config();
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 
