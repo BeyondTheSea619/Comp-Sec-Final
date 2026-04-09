@@ -2,6 +2,11 @@ const express = require("express");
 const router = express.Router();
 const Restaurant = require("../models/Restaurant");
 
+// Prevent eDoS
+function escapeRegex(str) {
+  return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
 // GET /api/search?q=burger
 router.get("/search", async (req, res) => {
   const q = req.query.q?.trim() || "";
