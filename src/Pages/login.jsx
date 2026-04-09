@@ -1,7 +1,5 @@
 import { useState } from "react";
 function Login() {
-  const [count, setCount] = useState(0);
-  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   // new: state to display login result message
@@ -48,19 +46,6 @@ function Login() {
     <div>
       {/* updated action -> onSubmit */}
       <form onSubmit={handleSubmit}>
-        <div className="formgroup">
-          <label className="formlabel">Name:</label>
-          <input
-            className="forminput"
-            type="text"
-            name="name"
-            value={name}
-            onChange={(e) => {
-              setName(e.target.value);
-              console.log(name);
-            }}
-          />
-        </div>
         <div className="formgroup">
           <label className="formlabel">Email:</label>
           <input

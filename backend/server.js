@@ -3,6 +3,9 @@ const cors = require("cors");
 const path = require("path");
 const fs = require("fs");
 
+// Link with the DB
+const connectDB = require("./db");
+
 // Import route files
 const authRoutes = require("./routes/authRoutes");
 const searchRoutes = require("./routes/searchRoutes");
@@ -34,6 +37,8 @@ app.use("/api", searchRoutes);
 app.use("/api", uploadRoutes);
 app.use("/api", adminRoutes);
 
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+connectDB().then(() => {
+  app.listen(PORT, () => {
+    console.log(`Server running on http://localhost:${PORT}`);
+  });
 });
