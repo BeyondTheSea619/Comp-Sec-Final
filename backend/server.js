@@ -3,15 +3,20 @@ const cors = require("cors");
 const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
+const { body, query, validationResult } = require("express-validator");
 
-// middleware
+//
 const app = express();
 const PORT = 5000;
+const JWT_SECRET = "compsec-demo-secret";
 
+// middleware
 app.use(cors());
 app.use(express.json());
 
-// making upload folder
+// ensure upload folder exists
 const uploadDir = path.join(__dirname, "uploads");
 if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir);
