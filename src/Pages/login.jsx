@@ -27,11 +27,16 @@ function Login() {
       if (res.ok) {
         // show success message and user role
         setMessage(`${data.message} (${data.role})`);
-        // log token can be used later for auth
-        console.log("Token:", data.token);
+
+        // Saves the token
+        localStorage.setItem("authToken", data.token);
+        localStorage.setItem("userRole", data.role);
       } else {
-        // show error message from server
-        setMessage(data.message);
+        if (data.errors && data.errors.length > 0) {
+          setMessage(data.errors[0].msg);
+        } else {
+          setMessage(data.message || "Login failed");
+        }
       }
     } catch (error) {
       console.error("Login error:", error);
