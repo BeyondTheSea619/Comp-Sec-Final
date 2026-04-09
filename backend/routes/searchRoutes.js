@@ -1,18 +1,26 @@
 const express = require("express");
 const router = express.Router();
+const Restaurant = require("../models/Restaurant");
 
-router.get("/search", (req, res) => {
-  const q = req.query.q?.toLowerCase() || "";
+// GET /api/search?q=burger
+router.get("/search", async (req, res) => {
+  const q = req.query.q?.trim() || "";
 
-  const items = [
-    { id: 1, name: "BurgerKing" },
-    { id: 2, name: "Domino's Pizza" },
-    { id: 3, name: "A&W" },
-  ];
+  try {
+    // Case-insensitive search on name or cuisine
+    const results = await Restaurant.find({
+      isActive: true,
+      $or: [
+        { name: { $regex: q, $options: "i" } },
+        { cuisine: { $regex: q, $options: "i" } },
+      ],
+    }).select("_id name cuisine address");
 
-  const results = items.filter((item) => item.name.toLowerCase().includes(q));
-
-  res.json(results);
+    res.json(results);
+  } catch (err) {
+    console.error("Search error:", err);
+    res.status(500).json({ message: "Server error" });
+  }
 });
 
 module.exports = router;
