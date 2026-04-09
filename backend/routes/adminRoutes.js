@@ -5,7 +5,7 @@ const { authenticate, adminOnly } = require("../middleware/authenticate");
 // TEMP DATA
 let users = [
   { id: 1, email: "admin@test.com", role: "admin" },
-  { id: 2, email: "user@test.come", role: "user" },
+  { id: 2, email: "user@test.com", role: "user" },
 ];
 
 let logs = [];
@@ -19,9 +19,9 @@ router.get("/users", authenticate, adminOnly, (req, res) => {
 router.delete("/users/:id", authenticate, adminOnly, (req, res) => {
   const id = parseInt(req.params.id);
 
-  users = users.fillter((u) => u.id !== id);
+  users = users.filter((u) => u.id !== id);
 
-  req.log("admin_delete_user", {
+  logs.push("admin_delete_user", {
     adminId: req.user.id,
     targetId: id,
   });
